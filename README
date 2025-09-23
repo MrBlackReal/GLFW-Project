@@ -1,0 +1,7 @@
+# 3D Game
+
+## TODO
+ - 3d rendering (vbo, shader)
+ - Voxel Base
+ - Load textures into atlas
+ - LODs and meshing
