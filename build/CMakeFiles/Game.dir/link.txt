@@ -1,1 +1,0 @@
-/usr/bin/cc -Wl,--dependency-file=CMakeFiles/Game.dir/link.d CMakeFiles/Game.dir/src/glad.c.o CMakeFiles/Game.dir/src/main.c.o CMakeFiles/Game.dir/src/shaders/shaders.c.o -o Game  -lglfw -ldl -lm
