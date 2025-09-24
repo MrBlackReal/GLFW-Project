@@ -7,6 +7,7 @@ set(OpenGL_GL_PREFERENCE GLVND)
 # Find OpenGL and GLFW
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
+find_package(X11 REQUIRED)
 
 pkg_search_module(GLFW REQUIRED glfw3)
 
@@ -14,6 +15,7 @@ pkg_search_module(GLFW REQUIRED glfw3)
 include_directories(
     ${GLFW_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIR}
+    ${X11_INCLUDE_DIR}
     include
     vendor/cimgui
     vendor/cimgui/imgui
@@ -36,18 +38,18 @@ add_executable(
 # Add cimgui subdirectory to handle its source files
 add_subdirectory(vendor/cimgui)
 
-# Link libraries (cimgui automatically links imgui as it's part of the submodule)
+# Link libraries
 target_link_libraries(
     Game
     ${GLFW_LIBRARIES}
     ${OPENGL_gl_LIBRARY}
+    ${X11_LIBRARIES}
     dl
     m
-    cimgui  # Linking cimgui will automatically include imgui
+    cimgui
 )
 
 target_sources(Game PRIVATE ${IMGUI_BACKEND_FILES})
 
 # Optionally, add compiler flags (useful for debugging)
 target_compile_options(Game PRIVATE -Wall -Wextra -g)
-

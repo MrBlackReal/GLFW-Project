@@ -1,4 +1,3 @@
 # /bin/bash
 
-cmake clean build/
-cmake --build build/ && ./build/Game
+mkdir -p build && cd build && cmake clean . && cmake --build . && cd .. && ./build/Game
