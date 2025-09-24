@@ -36,3 +36,22 @@ int compile_shader(const char* source, GLenum type) {
 
     return shader;
 }
+
+int link_program(int vert, int frag) {
+    int shader_program = glCreateProgram();
+
+    glAttachShader(shader_program, vert);
+    glAttachShader(shader_program, frag);
+    glLinkProgram(shader_program);
+
+    int success;
+    glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
+
+    if (!success) {
+        char log[1024];
+        glGetProgramInfoLog(shader_program, 1024, NULL, log);
+        fprintf(stderr, "Program link error: %s\n", log);
+    }
+    
+    return shader_program;
+}

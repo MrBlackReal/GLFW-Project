@@ -1,6 +1,4 @@
 # /bin/bash
 
-cd build
-make
-cd ..
-./build/Game
+cmake clean build/
+cmake --build build/ && ./build/Game

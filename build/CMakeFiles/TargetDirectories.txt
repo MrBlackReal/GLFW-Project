@@ -1,3 +1,0 @@
-/home/quirin/coding/two-dim-game/build/CMakeFiles/Game.dir
-/home/quirin/coding/two-dim-game/build/CMakeFiles/edit_cache.dir
-/home/quirin/coding/two-dim-game/build/CMakeFiles/rebuild_cache.dir

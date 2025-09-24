@@ -6,3 +6,4 @@
 
 char* read_file(const char* path);
 int compile_shader(const char* source, GLenum type);
+int link_program(int vert, int frag);
