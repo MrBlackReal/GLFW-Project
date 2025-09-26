@@ -8,10 +8,12 @@
 #include "cimgui_impl.h"
 
 extern bool show_debug;
-extern float rotX, rotY, rotZ;
-extern float rot[4];
+extern float angle, fps, minFps, maxFps, fpsTimer;
+extern int rot[3], frames;
 extern ImVec4 clearColor;
 
 bool ui_init(GLFWwindow* window);
-void ui_render();
+void ui_render(GLFWwindow* window);
 void ui_shutdown();
+
+void update_fps_counter(float deltaTime);

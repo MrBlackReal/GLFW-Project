@@ -5,12 +5,28 @@
 #include <stdbool.h>
 
 typedef struct {
+    float x, y, z;
+} Voxel;
+
+typedef struct {
+    float* verts;
+    size_t capacity, count;
+} Mesh;
+
+typedef struct {
+    Mesh* mesh;
+    GLuint vao, vbo;
+} RenderMesh;
+
+typedef struct {
     unsigned int width, height;
     GLFWwindow* window;
     mat4x4 modelMatrix, viewMatrix, projectionMatrix;
 } Game;
 
-int  game_init(Game* game, unsigned int width, unsigned int height);
+void setup_view(Game* game, float fov, unsigned int width, unsigned int height);
+
+bool game_init(Game* game, unsigned int width, unsigned int height);
 void game_update(Game* game, float deltaTime);
-void game_render(Game* game);
+void game_render(Game* game, float deltaTime);
 void game_cleanup(Game* game);

@@ -4,52 +4,75 @@
 #include "engine/ui/ui.h"
 #include "engine/renderer/renderer.h"
 #include "engine/input/input.h"
-#include "shaders/shaders.h"
+#include "engine/shaders/shaders.h"
+
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+
+static Game game;
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    (void)window;
+    setup_view(&game, 45.0f, width, height);
+}
 
 int main() {
-    Game game;
-
-    if (!game_init(&game, 800, 600))
+    if (!game_init(&game, WINDOW_WIDTH, WINDOW_HEIGHT))
         return -1;
 
     glfwSetKeyCallback(game.window, key_callback);
+    glfwSetFramebufferSizeCallback(game.window, framebuffer_size_callback);
 
     if (!ui_init(game.window))
         return -1;
 
     char* vert_src = read_file("assets/shaders/vert.glsl");
     char* frag_src = read_file("assets/shaders/frag.glsl");
+
     int vert_shader = compile_shader(vert_src, GL_VERTEX_SHADER);
     int frag_shader = compile_shader(frag_src, GL_FRAGMENT_SHADER);
     int shader_program = link_program(vert_shader, frag_shader);
     
     free(vert_src);
     free(frag_src);
-
+    
     unsigned int cubeVAO = renderer_create_cube();
 
     float lastTime = glfwGetTime();
+
     while (!glfwWindowShouldClose(game.window)) {
         float time = glfwGetTime();
         float delta = time - lastTime;
-        lastTime = time;
+
+        update_fps_counter(delta);
+
+        glfwPollEvents();
 
         game_update(&game, delta);
+
+        glEnable(GL_DEPTH_TEST);
+        {
+            game_render(&game, delta);
+            
+            float rotation[] = { (float)rot[0], (float)rot[1], (float)rot[2], angle };
+            renderer_draw_cube(cubeVAO, shader_program, game.modelMatrix, game.viewMatrix, game.projectionMatrix, rotation);
+        }
+        glDisable(GL_DEPTH_TEST);
+
+        ui_render(game.window);
+
+        glfwSwapBuffers(game.window);
 
         glViewport(0, 0, game.width, game.height);
         glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        renderer_draw_cube(cubeVAO, shader_program, game.modelMatrix, game.viewMatrix, game.projectionMatrix, rot);
-
-        ui_render();
-
-        glfwSwapBuffers(game.window);
-        glfwPollEvents();
+        lastTime = time;
     }
 
     ui_shutdown();
     game_cleanup(&game);
+
+    fprintf(stdout, "Cleaned up! Bye bye!\n");
 
     return 0;
 }

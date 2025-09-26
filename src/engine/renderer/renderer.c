@@ -33,7 +33,7 @@ static const unsigned int cube_indices[] = {
     6, 7, 3
 };
 
-unsigned int renderer_create_cube() {
+GLuint renderer_create_cube() {
     GLuint vao, vbo, ebo;
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -50,27 +50,29 @@ unsigned int renderer_create_cube() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+//    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+//    glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
 
     return vao;
 }
 
-void renderer_draw_cube(unsigned int vao, int shader_program, mat4x4 model, mat4x4 view, mat4x4 projection, float rot[4]) {
+void renderer_draw_cube(GLuint vao, int shader_program, mat4x4 model, mat4x4 view, mat4x4 projection, float rot[4]) {
     glEnable(GL_DEPTH_TEST);
     glUseProgram(shader_program);
 
     int modelLoc = glGetUniformLocation(shader_program, "model");
     int viewLoc  = glGetUniformLocation(shader_program, "view");
     int projLoc  = glGetUniformLocation(shader_program, "projection");
+    int color    = glGetUniformLocation(shader_program, "vertColor");
 
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, (const GLfloat*)model);
     glUniformMatrix4fv(viewLoc,  1, GL_FALSE, (const GLfloat*)view);
     glUniformMatrix4fv(projLoc,  1, GL_FALSE, (const GLfloat*)projection);
+    glUniform3f(color, (const GLfloat)1.0f, (const GLfloat)1.0f, (const GLfloat)1.0f);
 
-    mat4x4_rotate(model, model, rot[0], rot[1], rot[2], rot[3]);
+    mat4x4_rotate(model, model, rot[0], rot[1], rot[2], rot[3] / 10);
 
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
