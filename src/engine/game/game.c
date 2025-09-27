@@ -51,7 +51,7 @@ bool game_init(Game* game, unsigned int width, unsigned int height) {
 
     mat4x4_translate(game->viewMatrix, 0.f, 0.f, -3.f);
 
-    setup_view(game, 45.0f, width, height);
+    setup_view(game, fov, width, height);
 
     return true;
 }

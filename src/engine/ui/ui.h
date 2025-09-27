@@ -8,7 +8,7 @@
 #include "cimgui_impl.h"
 
 extern bool show_debug;
-extern float angle, fps, minFps, maxFps, fpsTimer;
+extern float angle, fps, minFps, maxFps, fpsTimer, fov;
 extern int rot[3], frames;
 extern ImVec4 clearColor;
 

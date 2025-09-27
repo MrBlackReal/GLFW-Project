@@ -6,10 +6,12 @@
 
 typedef struct {
     float x, y, z;
+    char type;
 } Voxel;
 
 typedef struct {
     float* verts;
+    GLuint* indices;
     size_t capacity, count;
 } Mesh;
 

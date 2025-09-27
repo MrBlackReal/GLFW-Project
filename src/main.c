@@ -36,6 +36,37 @@ int main() {
     free(vert_src);
     free(frag_src);
     
+    {
+        GLint i;
+        GLint count;
+
+        GLint size; // size of the variable
+        GLenum type; // type of the variable (float, vec3 or mat4, etc)
+
+        const GLsizei bufSize = 16; // maximum name length
+        GLchar name[bufSize]; // variable name in GLSL
+        GLsizei length; // name length
+
+        glGetProgramiv(shader_program, GL_ACTIVE_ATTRIBUTES, &count);
+        printf("Active Attributes: %d\n", count);
+
+        for (i = 0; i < count; i++)
+        {
+            glGetActiveAttrib(shader_program, (GLuint)i, bufSize, &length, &size, &type, name);
+            printf("Attribute #%d Type: %u Name: %s\n", i, type, name);
+        }
+
+        glGetProgramiv(shader_program, GL_ACTIVE_UNIFORMS, &count);
+        printf("Active Uniforms: %d\n", count);
+
+        for (i = 0; i < count; i++)
+        {
+            glGetActiveUniform(shader_program, (GLuint)i, bufSize, &length, &size, &type, name);
+
+            printf("Uniform #%d Type: %u Name: %s\n", i, type, name);
+        }
+    }
+
     unsigned int cubeVAO = renderer_create_cube();
 
     float lastTime = glfwGetTime();

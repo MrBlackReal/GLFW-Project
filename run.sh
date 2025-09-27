@@ -1,3 +1,3 @@
 # /bin/bash
 
-mkdir -p build && cd build && cmake --build . && cd .. && ./build/Game
+mkdir -p build && cp -r assets/ build/ && cd build && cmake --build . && ./Game
